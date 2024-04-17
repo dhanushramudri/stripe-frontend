@@ -1,6 +1,9 @@
+// PaymentForm.js
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import "./PaymentForm.css"; // Import your custom CSS file
 
 const PaymentForm = () => {
   const [amount, setAmount] = useState(100); // Set the default amount to $1
@@ -36,10 +39,11 @@ const PaymentForm = () => {
       console.error(error);
     } else {
       console.log("Payment succeeded:", paymentIntent);
+      // Redirect or show success message
     }
   };
 
-  const handleChange = (event) => {
+  const handleAmountChange = (event) => {
     setAmount(event.target.value);
   };
 
@@ -57,28 +61,34 @@ const PaymentForm = () => {
     }
   };
 
-  const handleAmountChange = (event) => {
-    setAmount(event.target.value);
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Amount (in dollars):
-          <input type="number" value={amount} onChange={handleAmountChange} />
-        </label>
-      </div>
-      <div>
-        <label>
-          Card details:
-          <CardElement />
-        </label>
-      </div>
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
-    </form>
+    <div className="payment-form-container">
+      <form onSubmit={handleSubmit} className="payment-form">
+        <div className="form-group">
+          <label htmlFor="amount" className="label">
+            Amount (in dollars):
+          </label>
+          <input
+            type="number"
+            id="amount"
+            value={amount}
+            onChange={handleAmountChange}
+            className="input"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="card-element" className="label">
+            Card details:
+          </label>
+          <div id="card-element" className="card-element">
+            <CardElement />
+          </div>
+        </div>
+        <button type="submit" disabled={!stripe} className="pay-button">
+          Pay
+        </button>
+      </form>
+    </div>
   );
 };
 
